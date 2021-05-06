@@ -12,7 +12,7 @@ using InstagramApiSharp.API;
 using InstagramApiSharp.Classes;
 using InstagramApiSharp.API.Builder;
 using InstagramApiSharp.Logger;
-
+using System.Threading;
 
 namespace HH_to_Social
 {
@@ -32,10 +32,14 @@ namespace HH_to_Social
 
         static void Main(string[] args)
         {
-            String ID = getNextID();
+            String ID = GetNextID();
+            if (ID == "None")
+            {
+                return;
+            }
             TwitterPost(ID);
             InstagramPost(ID);
-            writeSQL(ID);
+            WriteSQL(ID);
             //writeSheet(ID);
         }
 
@@ -227,7 +231,7 @@ namespace HH_to_Social
         /// Updates the Sent column of the post just posed to a value of 1
         /// </summary>
         /// <param name="ID"></param>
-        public static void writeSQL(String ID)
+        public static void WriteSQL(String ID)
         {
             SqlCommand cmd = new SqlCommand($"UPDATE Posts SET [Sent] = 1 WHERE [ID] = '{ID}'", con);
             int update = cmd.ExecuteNonQuery();
@@ -242,25 +246,30 @@ namespace HH_to_Social
         /// Gets the ID of the next product that needs to be tweeted. Looks for the product with todays date
         /// </summary>
         /// <returns></returns>
-        public static String getNextID()
+        public static String GetNextID()
         {
             con.Open();
 
             SqlCommand cmd = new SqlCommand("SELECT [ID] FROM Posts WHERE [Date] = CAST(GETDATE() AS DATE)", con);
             SqlDataReader Reader = cmd.ExecuteReader();
-
-            if (Reader.Read())
+            Reader.Read();
+            
+            String ID = Reader[0].ToString();
+            if (ID == "None")
             {
-                String ID = Reader[0].ToString();
-                Reader.Close();
+                //grabs any Sent=0 ID if there is nothing for today
+                cmd.CommandText = "SELECT [ID] FROM Posts WHERE [Sent] = 0";
+                Reader = cmd.ExecuteReader();
+                Reader.Read();
+
+                ID = Reader[0].ToString();
                 if (ID == "None")
                 {
                     MessageBox.Show("There is no post scheduled for today. Closing...");
                 }
-                return ID;
-            }
+            }            
             Reader.Close();
-            return "None";
+            return ID;
         }
 
         /// <summary>
