@@ -42,6 +42,12 @@
 <ul>
 <li>Grabs the data of the product by the ID, constructs a post, and posts the post to Instagram</li>
 </ul>
+<ol start="4">
+<li><strong>WriteSQL</strong>(ID);</li>
+</ol>
+<ul>
+<li>Updates the [Sent] column of the post just posted to the value of 1 (1 means posted, 0 means not posted yet)</li>
+</ul>
 <h2 id="improvements">Improvements</h2>
 <ul>
 <li>Find a faster way to automatically run this program at 4:00 pm every day because sometimes I get busy and forget.</li>
