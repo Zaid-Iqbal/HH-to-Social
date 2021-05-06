@@ -25,19 +25,19 @@
 <p>-SQL: Database Storage to store a list of posts to be posted throughout the week</p>
 <h2 id="procedure">Procedure</h2>
 <ol>
-<li>GetNextID();</li>
+<li><strong>GetNextID</strong>();</li>
 </ol>
 <ul>
 <li>Reads the SQL Posts table and grabs the ID of the product that needs to posted that day.</li>
 </ul>
 <ol start="2">
-<li>TwitterPost(ID);</li>
+<li><strong>TwitterPost</strong>(ID);</li>
 </ol>
 <ul>
 <li>Grabs the data of the product by the ID, constructs a tweet, and posts the tweet</li>
 </ul>
 <ol start="3">
-<li>InstagramPost(ID);</li>
+<li><strong>InstagramPost</strong>(ID);</li>
 </ol>
 <ul>
 <li>Grabs the data of the product by the ID, constructs a post, and posts the post to Instagram</li>
